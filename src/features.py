@@ -469,6 +469,11 @@ FEATURE_COLUMNS = [
     "addr_token_set_ratio", "addr_lcs_ratio",
     "addr_length_ratio", "addr_shared_tokens",
     "zippin_exact_match", "both_have_zippin",
+    # v4: Street number discrepancy features
+    "street_num_exact_match", "street_num_conflict",
+    "street_num_either_missing",
+    # v4: ZIP/PIN conflict feature
+    "zippin_conflict",
     # Cross-field features
     "name1_in_addr2", "name2_in_addr1",
     # Meta features

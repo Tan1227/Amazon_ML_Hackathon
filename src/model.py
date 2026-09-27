@@ -91,6 +91,35 @@ def sweep_threshold(df_preds: pd.DataFrame, label_col: str = "label") -> Tuple[f
     return round(float(best_t), 2), round(best_f, 4)
 
 
+def sweep_threshold_per_country(
+    df_preds: pd.DataFrame,
+    label_col: str = "label",
+    country_col: str = "country_encoded",
+) -> Dict[float, float]:
+    """
+    Sweep thresholds separately for each country partition.
+    Returns dict of {country_code: best_threshold}.
+
+    This allows US, India, and France to have different decision boundaries,
+    which is important because their name/address distributions differ significantly.
+    """
+    country_thresholds = {}
+    for country_code, group in df_preds.groupby(country_col):
+        if len(group) == 0:
+            continue
+        best_t, best_f = 0.5, 0.0
+        for t in np.arange(0.20, 0.96, 0.02):
+            f = compute_f05_per_entity(group, threshold=t, label_col=label_col)
+            if f > best_f:
+                best_f = f
+                best_t = t
+        country_thresholds[country_code] = round(float(best_t), 2)
+        logger.info(
+            f"  Country {country_code}: best threshold={best_t:.2f} -> F_0.5={best_f:.4f}"
+        )
+    return country_thresholds
+
+
 # ---------------------------------------------------------------------------
 # Negative sampling
 # ---------------------------------------------------------------------------
