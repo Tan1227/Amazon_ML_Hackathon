@@ -1,0 +1,24 @@
+# Dataset files and archives
+dataset/
+*.zip
+*.tar.gz
+
+# Pipeline outputs and model checkpoints
+output/
+
+# Python cache & virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Logs and debug files
+*.log
+pipeline.log
+
+# OS metadata
+.DS_Store
+Thumbs.db
+__MACOSX/
